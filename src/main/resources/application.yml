@@ -2,14 +2,14 @@ spring:
   application:
     name: spring-boot-blazebit
   jpa:
-    show-sql: false
+    show-sql: true
     hibernate:
       ddl-auto: create-drop
+    defer-datasource-initialization: true
   h2:
     console:
       enabled: true
 
-
-#logging:
-#  level:
-#    org.hibernate.SQL: DEBUG
+logging:
+  level:
+    org.hibernate.SQL: DEBUG

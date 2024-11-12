@@ -17,21 +17,55 @@
 package org.kgromov.controller;
 
 import org.kgromov.repository.CatSimpleViewRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.kgromov.repository.CatWithOwnerViewRepository;
+import org.kgromov.repository.OwnerCatsViewRepository;
+import org.kgromov.repository.PersonSimpleViewRepository;
+import org.kgromov.view.CatSimpleView;
+import org.kgromov.view.CatWithOwnerView;
+import org.kgromov.view.OwnerCatsView;
+import org.kgromov.view.PersonSimpleView;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import java.util.List;
+
+@RestController
 public class SampleController {
 
-    @Autowired
-    CatSimpleViewRepository catRepo;
+    private final CatSimpleViewRepository catSimpleViewRepository;
+    private final PersonSimpleViewRepository personSimpleViewRepository;
+    private final CatWithOwnerViewRepository catWithOwnerViewRepository;
+    private final OwnerCatsViewRepository ownerCatsViewRepository;
 
-    @GetMapping("/")
-    @ResponseBody
-    String home() {
-        return catRepo.findAll().toString();
+    public SampleController(CatSimpleViewRepository catSimpleViewRepository,
+                            PersonSimpleViewRepository personSimpleViewRepository,
+                            CatWithOwnerViewRepository catWithOwnerViewRepository,
+                            OwnerCatsViewRepository ownerCatsViewRepository) {
+        this.catSimpleViewRepository = catSimpleViewRepository;
+        this.personSimpleViewRepository = personSimpleViewRepository;
+        this.catWithOwnerViewRepository = catWithOwnerViewRepository;
+        this.ownerCatsViewRepository = ownerCatsViewRepository;
+    }
+
+    @GetMapping("/cats")
+    ResponseEntity<List<CatSimpleView>> getAllCats() {
+        return ResponseEntity.ok(catSimpleViewRepository.findAll());
+    }
+
+    @GetMapping("/persons")
+    Iterable<PersonSimpleView> getAllPersons() {
+        return personSimpleViewRepository.findAll();
+    }
+
+    @GetMapping("/catsWithOwners")
+    Iterable<CatWithOwnerView> getCatsWithOwners() {
+        return catWithOwnerViewRepository.findAll();
+    }
+
+    @GetMapping("/ownerCats")
+    Iterable<OwnerCatsView> getOwnerCats() {
+        return ownerCatsViewRepository.findAll();
     }
 
 }

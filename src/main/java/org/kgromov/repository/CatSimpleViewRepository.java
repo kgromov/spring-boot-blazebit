@@ -21,7 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.blazebit.persistence.spring.data.repository.EntityViewRepository;
 import org.kgromov.view.*;
 
+import java.util.List;
+
 @Repository
 @Transactional(readOnly = true)
 public interface CatSimpleViewRepository extends EntityViewRepository<CatSimpleView, Long> {
+
+    List<CatSimpleView> findAll();
 }
