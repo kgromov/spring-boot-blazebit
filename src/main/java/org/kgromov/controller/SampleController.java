@@ -16,14 +16,8 @@
 
 package org.kgromov.controller;
 
-import org.kgromov.repository.CatSimpleViewRepository;
-import org.kgromov.repository.CatWithOwnerViewRepository;
-import org.kgromov.repository.OwnerCatsViewRepository;
-import org.kgromov.repository.PersonSimpleViewRepository;
-import org.kgromov.view.CatSimpleView;
-import org.kgromov.view.CatWithOwnerView;
-import org.kgromov.view.OwnerCatsView;
-import org.kgromov.view.PersonSimpleView;
+import org.kgromov.repository.*;
+import org.kgromov.view.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,15 +31,18 @@ public class SampleController {
     private final PersonSimpleViewRepository personSimpleViewRepository;
     private final CatWithOwnerViewRepository catWithOwnerViewRepository;
     private final OwnerCatsViewRepository ownerCatsViewRepository;
+    private final CatsGroupedByOwnerViewRepository catsGroupedByOwnerViewRepository;
 
     public SampleController(CatSimpleViewRepository catSimpleViewRepository,
                             PersonSimpleViewRepository personSimpleViewRepository,
                             CatWithOwnerViewRepository catWithOwnerViewRepository,
-                            OwnerCatsViewRepository ownerCatsViewRepository) {
+                            OwnerCatsViewRepository ownerCatsViewRepository,
+                            CatsGroupedByOwnerViewRepository catsGroupedByOwnerViewRepository) {
         this.catSimpleViewRepository = catSimpleViewRepository;
         this.personSimpleViewRepository = personSimpleViewRepository;
         this.catWithOwnerViewRepository = catWithOwnerViewRepository;
         this.ownerCatsViewRepository = ownerCatsViewRepository;
+        this.catsGroupedByOwnerViewRepository = catsGroupedByOwnerViewRepository;
     }
 
     @GetMapping("/cats")
@@ -66,6 +63,11 @@ public class SampleController {
     @GetMapping("/ownerCats")
     Iterable<OwnerCatsView> getOwnerCats() {
         return ownerCatsViewRepository.findAll();
+    }
+
+    @GetMapping("/catsGroupedByOwner")
+    Iterable<CatsGroupedByOwnerView> getCatsGroupedByOwner() {
+        return catsGroupedByOwnerViewRepository.findAll();
     }
 
 }

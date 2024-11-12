@@ -6,6 +6,6 @@ import org.kgromov.model.Person;
 import java.util.Set;
 
 @EntityView(Person.class)
-public interface OwnerCatsView extends PersonSimpleView{
+public interface OwnerCatsView extends PersonSimpleView {
     Set<CatSimpleView> getKittens();
 }
