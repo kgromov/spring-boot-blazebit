@@ -16,16 +16,20 @@
 
 package org.kgromov.repository;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import com.blazebit.persistence.spring.data.repository.EntityViewRepository;
-import org.kgromov.view.*;
+import org.kgromov.view.CatSimpleView;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Set;
 
-@Repository
-@Transactional(readOnly = true)
 public interface CatSimpleViewRepository extends EntityViewRepository<CatSimpleView, Long> {
 
     List<CatSimpleView> findAll();
+
+    @Query("SELECT GROUP_CONCAT(c.name) FROM Cat c " +
+            "join Person p on c.owner.id = p.id " +
+            "WHERE p.id = :ownerId " +
+            "GROUP BY c.owner.id")
+    String getCatNamesByOwnerId(Long ownerId);
 }
