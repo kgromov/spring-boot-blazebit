@@ -2,6 +2,8 @@ package org.kgromov.repository;
 
 import com.blazebit.persistence.CriteriaBuilderFactory;
 import com.blazebit.persistence.JoinType;
+import com.blazebit.persistence.ObjectBuilder;
+import com.blazebit.persistence.SelectBuilder;
 import com.blazebit.persistence.view.EntityViewManager;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
@@ -74,5 +76,30 @@ public class CatCriteriaBuilderRepository {
                 .toList();
     }
 
+    // Alternative framework specific way of explicit mapping from Tuple. So EntityView should be used for dto projection in most cases
+    public List<CatProjection> findAllToProjectionWithObjectBuilder() {
+        return cbf.create(em, Tuple.class)
+                .from(Cat.class, "c")
+                .selectNew(new ObjectBuilder<CatProjection>() {
+                    @Override
+                    public <X extends SelectBuilder<X>> void applySelects(X selectBuilder) {
+                        selectBuilder
+                                .select("c.id")
+                                .select("c.name")
+                                .select("c.age");
+                    }
 
+                    @Override
+                    public CatProjection build(Object[] tuple) {
+                        return new CatProjection((Long) tuple[0], (String) tuple[1], (Integer) tuple[2]);
+                    }
+
+                    @Override
+                    public List<CatProjection> buildList(List<CatProjection> list) {
+                        return list;
+                    }
+                })
+                .orderByAsc("c.name")
+                .getResultList();
+    }
 }

@@ -83,7 +83,6 @@ public class SampleController {
         var existsById = catCriteriaBuilderRepository.existsById(1L);
         var count = catCriteriaBuilderRepository.count();
         var catNamesByOwnerId = catCriteriaBuilderRepository.getCatNamesByOwnerId(6L);
-        var catsToProjection = catCriteriaBuilderRepository.findAllToProjection();
-        var catsToProjection2 = catCriteriaBuilderRepository.findAllToProjectionWithObjectBuilder();
+        List<CatProjection> catsToProjection = catCriteriaBuilderRepository.findAllToProjection();
     }
 }
