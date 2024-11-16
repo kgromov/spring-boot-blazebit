@@ -21,7 +21,6 @@ import org.kgromov.view.CatSimpleView;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Set;
 
 public interface CatSimpleViewRepository extends EntityViewRepository<CatSimpleView, Long> {
 
